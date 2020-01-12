@@ -1,0 +1,5 @@
+- mybatis-config.xml
+- model
+- Mapper.xml
+- log4j 配置
+- 测试
