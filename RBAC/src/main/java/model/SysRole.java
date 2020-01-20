@@ -11,7 +11,10 @@ import java.util.Date;
 public class SysRole {
     private Long id;
     private String roleName;
-    private Enabled enabled;
+//    private Enabled enabled;
+    private Integer enabled;
     private String createBy;
     private Date createTime;
+
+    private SysUser sysUser;
 }

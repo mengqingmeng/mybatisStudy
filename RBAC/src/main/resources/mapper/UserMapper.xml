@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="mapper.UserMapper">
     <resultMap id="userMap" type="model.SysUser">
         <id property="id" column="id"></id>
@@ -10,8 +9,56 @@
         <result property="userEmail" column="user_email"></result>
         <result property="userInfo" column="user_info"></result>
         <result property="headImg" column="head_img" jdbcType="BLOB"></result>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP "></result>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
     </resultMap>
+<!--    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">-->
+    <insert id="insertUser">
+        <selectKey keyProperty="id" keyColumn="id" resultType="long" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_user(user_name,user_password,user_email,user_info,head_img,create_time)
+        values (#{userName},#{userPassword},#{userEmail},#{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByUserId">
+        update sys_user
+        set user_name = #{userName},
+        user_email = #{userEmail},
+        user_info = #{userInfo},
+        head_img = #{headImg,jdbcType=BLOB},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
 
-    <select id="selectById" resultMap="userMap"></select>
+    <select id="selectById" resultMap="userMap">
+        select * from sys_user where id = #{id}
+    </select>
+    <select id="selectAll" resultType="model.SysUser">
+        select id,user_name,user_password,user_email,user_info,head_img,create_time from sys_user
+    </select>
+    <select id="selectRolesByUserId" resultType="model.SysRole">
+        select r.id,
+        r.role_name roleName,
+        r.enabled,
+        r.create_by createBy,
+        r.create_time createTime,
+        u.user_name as "sysUser.userName",
+        u.user_email as "sysUser.userEmail"
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id = #{userId}
+    </select>
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="model.SysRole">
+        select r.id,
+        r.role_name roleName,
+        r.enabled,
+        r.create_by createBy,
+        r.create_time createTime,
+        u.user_name as "sysUser.userName",
+        u.user_email as "sysUser.userEmail"
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id=#{userId} and r.enabled=#{enabled}
+    </select>
 </mapper>
