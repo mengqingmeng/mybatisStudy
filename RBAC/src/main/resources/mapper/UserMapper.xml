@@ -11,6 +11,34 @@
         <result property="headImg" column="head_img" jdbcType="BLOB"></result>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
     </resultMap>
+
+<!--    继承userMap-->
+    <resultMap id="userRoleMap" type="model.SysUser" extends="userMap">
+        <result property="role.id" column="role_id"></result>
+        <result property="role.roleName" column="role_name"></result>
+        <result property="role.enabled" column="enabled"></result>
+        <result property="role.createBy" column="create_by" jdbcType="TIMESTAMP"></result>
+        <result property="role.createTime" column="role_create_time" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <resultMap id="roleMap" type="model.SysRole">
+        <result property="id" column="id"></result>
+        <result property="roleName" column="role_name"></result>
+        <result property="enabled" column="enabled"></result>
+        <result property="createBy" column="create_by" jdbcType="TIMESTAMP"></result>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+    <resultMap id="userRoleMap2" type="model.SysUser" extends="userMap">
+        <association property="role" columnPrefix="role_" resultMap="roleMap"></association>
+<!--        <association property="role" columnPrefix="role_" javaType="model.SysRole" resultMap="roleMap">-->
+<!--            <result property="id" column="id"></result>-->
+<!--            <result property="roleName" column="role_name"></result>-->
+<!--            <result property="enabled" column="enabled"></result>-->
+<!--            <result property="createBy" column="create_by" jdbcType="TIMESTAMP"></result>-->
+<!--            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>-->
+<!--        </association>-->
+    </resultMap>
+
 <!--    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">-->
     <insert id="insertUser">
         <selectKey keyProperty="id" keyColumn="id" resultType="long" order="AFTER">
@@ -60,5 +88,23 @@
         inner join sys_user_role ur on ur.user_id = u.id
         inner join sys_role r on r.id = ur.role_id
         where u.id=#{userId} and r.enabled=#{enabled}
+    </select>
+    <select id="selectUserRoleById" resultMap="userRoleMap">
+        select u.id,u.user_name,u.user_password,u.user_email,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.enabled enabled,r.create_by create_by,r.create_time role_create_time,
+        r.role_name role_name
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id= #{userId}
+    </select>
+    <select id="selectUserRoleById2" resultMap="userRoleMap2">
+        select u.id,u.user_name,u.user_password,u.user_email,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.enabled role_enabled,r.create_by role_create_by,r.create_time role_create_time,
+        r.role_name role_role_name
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id= #{userId}
     </select>
 </mapper>
