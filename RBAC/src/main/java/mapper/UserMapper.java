@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface UserMapper {
+public interface
+
+UserMapper {
 
     SysUser selectById(Long id);
     List<SysUser> selectAll();
@@ -16,4 +18,5 @@ public interface UserMapper {
     int updateByUserId(SysUser user);
     SysUser selectUserRoleById(Long userId);
     SysUser selectUserRoleById2(Long userId);
+    List<SysUser> selectAllUserAndRoles();
 }

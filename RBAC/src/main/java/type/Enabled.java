@@ -1,8 +1,9 @@
 package type;
 
 public enum Enabled {
-    enable(1), //启用
-    disable(0);// 禁用
+    enabled(1), //启用
+    disabled(0);// 禁用
+
 
     private final int value;
 

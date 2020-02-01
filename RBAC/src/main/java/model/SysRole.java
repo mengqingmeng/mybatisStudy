@@ -6,6 +6,7 @@ import lombok.ToString;
 import type.Enabled;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -13,10 +14,12 @@ import java.util.Date;
 public class SysRole {
     private Long id;
     private String roleName;
-//    private Enabled enabled;
-    private Integer enabled;
+    private Enabled enabled;
+//    private Integer enabled;
     private String createBy;
     private Date createTime;
 
     private SysUser sysUser;
+
+    List<SysPrivilege> privilegeList;
 }

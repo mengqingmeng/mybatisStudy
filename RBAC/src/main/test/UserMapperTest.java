@@ -1,10 +1,13 @@
+import mapper.RoleMapper;
 import mapper.UserMapper;
+import model.SysPrivilege;
 import model.SysRole;
 import model.SysUser;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.management.relation.Role;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +70,7 @@ public class UserMapperTest extends BaseMapperTest {
             sysUser = userMapper.selectById(1001L);
             System.out.println(sysUser.getUserInfo());
         }finally {
-
+            sqlSession.close();
         }
     }
 
@@ -86,5 +89,40 @@ public class UserMapperTest extends BaseMapperTest {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         SysUser sysUser = userMapper.selectUserRoleById2(1001L);
         System.out.println(sysUser);
+    }
+
+    @Test
+    public void testGetAllUserRoles(){
+        SqlSession sqlSession = getSqlSession();
+        try{
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> sysUsers = userMapper.selectAllUserAndRoles();
+            sysUsers.stream().forEach(sysUser -> {
+                List<SysRole> roleList = sysUser.getRoleList();
+                System.out.println("用户名：" + sysUser.getUserName());
+                roleList.stream().forEach(sysRole -> {
+                    List<SysPrivilege> privilegeList = sysRole.getPrivilegeList();
+                    privilegeList.stream().forEach(sysPrivilege -> {
+                        System.out.println("权限名:" + sysPrivilege.getPrivilegeName());
+                    });
+                });
+            });
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void selectAllRolePrivileges(){
+        SqlSession sqlSession = getSqlSession();
+        try{
+            RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+            List<SysRole> roleList = roleMapper.selectAllRoleAndPrivileges();
+            roleList.stream().forEach(sysRole -> {
+                System.out.println(sysRole);
+            });
+        }finally {
+            sqlSession.close();
+        }
     }
 }

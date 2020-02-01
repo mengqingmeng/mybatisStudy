@@ -3,33 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.UserMapper">
     <resultMap id="userMap" type="model.SysUser">
-        <id property="id" column="id"></id>
-        <result property="userName" column="user_name"></result>
-        <result property="userPassword" column="user_password"></result>
-        <result property="userEmail" column="user_email"></result>
-        <result property="userInfo" column="user_info"></result>
-        <result property="headImg" column="head_img" jdbcType="BLOB"></result>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userInfo" column="user_info"/>
+        <result property="headImg" column="head_img" jdbcType="BLOB"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
 <!--    继承userMap-->
     <resultMap id="userRoleMap" type="model.SysUser" extends="userMap">
-        <result property="role.id" column="role_id"></result>
-        <result property="role.roleName" column="role_name"></result>
-        <result property="role.enabled" column="enabled"></result>
-        <result property="role.createBy" column="create_by" jdbcType="TIMESTAMP"></result>
-        <result property="role.createTime" column="role_create_time" jdbcType="TIMESTAMP"></result>
+        <result property="role.id" column="role_id"/>
+        <result property="role.roleName" column="role_name"/>
+        <result property="role.enabled" column="enabled"/>
+        <result property="role.createBy" column="create_by" jdbcType="TIMESTAMP"/>
+        <result property="role.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="roleMap" type="model.SysRole">
-        <result property="id" column="id"></result>
-        <result property="roleName" column="role_name"></result>
-        <result property="enabled" column="enabled"></result>
-        <result property="createBy" column="create_by" jdbcType="TIMESTAMP"></result>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
-    </resultMap>
     <resultMap id="userRoleMap2" type="model.SysUser" extends="userMap">
-        <association property="role" columnPrefix="role_" resultMap="roleMap"></association>
+        <association property="role" columnPrefix="role_" resultMap="mapper.RoleMapper.roleMap"/>
 <!--        <association property="role" columnPrefix="role_" javaType="model.SysRole" resultMap="roleMap">-->
 <!--            <result property="id" column="id"></result>-->
 <!--            <result property="roleName" column="role_name"></result>-->
@@ -37,6 +30,9 @@
 <!--            <result property="createBy" column="create_by" jdbcType="TIMESTAMP"></result>-->
 <!--            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>-->
 <!--        </association>-->
+    </resultMap>
+    <resultMap id="userRoleListMap" type="model.SysUser" extends="userMap">
+        <collection property="roleList" resultMap="mapper.RoleMapper.rolePrivilegeListMap" columnPrefix="role_"/>
     </resultMap>
 
 <!--    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">-->
@@ -106,5 +102,15 @@
         inner join sys_user_role ur on ur.user_id = u.id
         inner join sys_role r on r.id = ur.role_id
         where u.id= #{userId}
+    </select>
+    <select id="selectAllUserAndRoles" resultMap="userRoleListMap">
+        select u.id,u.user_name,u.user_password,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.role_name role_role_name,r.enabled role_enabled,r.create_by role_create_by,r.create_time role_create_time,
+        p.id role_privilege_id,p.privilege_name role_privilege_privilege_name,p.privilege_url role_privilege_privilege_url
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        inner join sys_role_privilege rp on rp.role_id = ur.role_id
+        inner join sys_privilege p on p.id = rp.privilege_id
     </select>
 </mapper>
