@@ -32,7 +32,7 @@ public class CounterMapperTest {
         try{
             List<Country> countryList= sqlSession.selectList("selectAll");
             countryList.stream().forEach(country -> {
-                System.out.printf("%-4d%4s%4s\n",country.getId(),country.getCountryname(),country.getCountrycode());
+//                System.out.printf("%-4d%4s%4s\n",country.getId(),country.getCountryname(),country.getCountrycode());
             });
         }finally {
             sqlSession.close();

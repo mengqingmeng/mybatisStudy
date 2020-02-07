@@ -5,9 +5,10 @@
 
 <configuration>
     <settings>
-        <setting name="logImpl" value="LOG4J"/>
+<!--        日志-->
+        <setting name="logImpl" value="SLF4J"/>
 <!--        缓存，默认为true，可以不配置-->
-        <setting name="cacheEnable" value="true"/>
+        <setting name="cacheEnabled" value="true"/>
     </settings>
     <typeAliases>
         <package name="model"/>
