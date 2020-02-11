@@ -12,13 +12,17 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <!--通过select方法获取用户角色权限列表-->
     <resultMap id="rolePrivilegeListMapSelect" extends="roleMap" type="model.SysRole">
+        <!--权限列表-->
+        <!--这里的roleId是selectRolesByUserId参数名，id为selectRolesByUserId查询的结果中的id-->
         <collection
                 property="privilegeList"
-                select="mapper.PrivilegeMapper.selectPrivilegesByRoleId"
+                select="mapper.PrivilegeMapper.selectRolesByUserId"
                 column="{roleId=id}"
                 fetchType="lazy"
         />
+
     </resultMap>
 
     <!--角色+权限列表-->

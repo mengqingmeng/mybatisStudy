@@ -8,6 +8,7 @@
         <result property="privilegeUrl" column="privilege_url"></result>
     </resultMap>
 
+<!--    根据角色id获取该角色下的权限-->
     <select id="selectPrivilegesByRoleId" resultMap="privilegeMap">
         select p.* from sys_privilege p
         inner join sys_role_privilege rp on rp.privilege_id = p.id
