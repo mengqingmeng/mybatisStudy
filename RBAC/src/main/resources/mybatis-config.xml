@@ -22,6 +22,9 @@
     <!--插件-->
     <plugins>
         <plugin interceptor="plugin.CameHumpInterceptor"/>
+        <plugin interceptor="plugin.PageInterceptor">
+            <property name="dialect" value="plugin.MySqlDialect"/>
+        </plugin>
     </plugins>
 
     <environments default="development">

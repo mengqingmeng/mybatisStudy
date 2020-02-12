@@ -3,6 +3,7 @@ package mapper;
 import model.SysRole;
 import model.SysUser;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ UserMapper {
 
     SysUser selectById(Long id);
     List<SysUser> selectAll();
+    List<SysUser> selectAll(RowBounds rowBounds);
     List<SysRole> selectRolesByUserId(Long userId);
     List<SysRole> selectRolesByUserIdAndRoleEnabled(@Param("userId")Long userId,@Param("enabled")Integer enabled);
     int insertUser(SysUser user);

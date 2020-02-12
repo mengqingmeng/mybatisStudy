@@ -3,6 +3,7 @@ import mapper.UserMapper;
 import model.SysPrivilege;
 import model.SysRole;
 import model.SysUser;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +29,21 @@ public class UserMapperTest extends BaseMapperTest {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         List<SysUser> userList = userMapper.selectAll();
         userList.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void testSelectAllPage(){
+        SqlSession sqlSession = getSqlSession();
+        try{
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> userList = userMapper.selectAll();
+            RowBounds  rowBounds = new RowBounds(0,1);
+            for(SysUser sysUser : userList){
+                System.out.println("用户名：" + sysUser.getUserName());
+            }
+        }finally {
+            sqlSession.close();
+        }
     }
 
     @Test

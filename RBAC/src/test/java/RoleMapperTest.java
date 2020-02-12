@@ -17,7 +17,10 @@ public class RoleMapperTest extends BaseMapperTest{
             roleList.stream().forEach(sysRole -> {
                 System.out.println(sysRole);
             });
-        }finally {
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
             sqlSession.close();
         }
     }
