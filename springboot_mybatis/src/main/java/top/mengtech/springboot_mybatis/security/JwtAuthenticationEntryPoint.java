@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * @ClassName JwtAuthenticationEntryPoint
- * @Description
+ * @Description 登陆失败
  * @Author MQM
  * @Date 2020-02-17 15:54
  */
@@ -19,6 +19,6 @@ import java.io.IOException;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "未登陆");
     }
 }

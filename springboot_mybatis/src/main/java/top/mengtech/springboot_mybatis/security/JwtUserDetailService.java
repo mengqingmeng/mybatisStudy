@@ -23,8 +23,9 @@ public class JwtUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         /**
-         * 在实际开发中，可以在这里根据用户名查询数据库，
+         * 在实际开发中，在这里根据用户名查询数据库，
          * 然后将数据库中的用户数据封装成UserDetails
+         * Spring Security拿到UserDetails和接口中
          */
         if (s.equals(userName)){
             return new User(userName,"$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",new ArrayList<>());

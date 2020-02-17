@@ -4,10 +4,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import top.mengtech.springboot_mybatis.jwt.JwtTokenUtil;
 import top.mengtech.springboot_mybatis.security.JwtUserDetailService;
@@ -56,10 +59,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 System.out.println("JWT token has expired");
             }
         }else{
-            System.out.println("jwt token does not begin with Bearer String");
+            System.out.println("请求中不含token");
         }
 
-        if(name != null && SecurityContextHolder.getContext().getAuthentication() !=null){
+        SecurityContext context1 = SecurityContextHolder.getContext();
+
+        if(name != null ){
             UserDetails userDetails = jwtUserDetailService.loadUserByUsername(name);
             if(jwtTokenUtil.validateToken(jwtToken,userDetails)){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -70,6 +75,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // that the current user is authenticated. So it passes the
                 // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                SecurityContext context2 = SecurityContextHolder.getContext();
+                // TODO:这Authentication
+                System.out.println(context1 == context2? "相等":"不" );
+
             }
         }
 
