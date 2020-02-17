@@ -69,7 +69,7 @@ public class JwtTokenUtil {
     private String doGenerateToken(Map claims,String subject){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.ES512,secret).compact();
+                .signWith(SignatureAlgorithm.HS512,secret).compact();
     }
 
     //validate token
