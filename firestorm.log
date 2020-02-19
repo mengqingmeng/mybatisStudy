@@ -1,0 +1,17 @@
+DEBUG Druid-ConnectionPool-Create-1141059550 druid.sql.Connection - {conn-10001,procId-38} connected
+DEBUG main druid.sql.Connection - {conn-10001} pool-connect
+DEBUG main druid.sql.Statement - {conn-10001, pstmt-20000} created. select id,countrycode,countryname from country
+DEBUG main druid.sql.Statement - {conn-10001, pstmt-20000} Parameters : []
+DEBUG main druid.sql.Statement - {conn-10001, pstmt-20000} Types : []
+DEBUG main druid.sql.Statement - {conn-10001, pstmt-20000} executed. 8.5047 millis. select id,countrycode,countryname from country
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} open
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Header: [id, countrycode, countryname]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Result: [1, CN, 中国]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Result: [2, US, 美国]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Result: [3, RU, 俄罗斯]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Result: [4, GB, 英国]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} Result: [5, FR, 法国]
+DEBUG main druid.sql.ResultSet - {conn-10001, pstmt-20000, rs-50000} closed
+DEBUG main druid.sql.Statement - {conn-10001, pstmt-20000} closed
+DEBUG main druid.sql.Connection - {conn-10001} pool-recycle
+DEBUG SpringContextShutdownHook druid.sql.Connection - {conn-10001} closed
