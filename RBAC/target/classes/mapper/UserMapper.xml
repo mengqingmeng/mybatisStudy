@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+    <resultMap id="userMap" type="model.SysUser">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userInfo" column="user_info"/>
+        <result property="headImg" column="head_img" jdbcType="BLOB"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+<!--    继承userMap-->
+    <resultMap id="userRoleMap" type="model.SysUser" extends="userMap">
+        <result property="role.id" column="role_id"/>
+        <result property="role.roleName" column="role_name"/>
+        <result property="role.enabled" column="enabled"/>
+        <result property="role.createBy" column="create_by" jdbcType="TIMESTAMP"/>
+        <result property="role.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="userRoleMap2" type="model.SysUser" extends="userMap">
+        <association property="role" columnPrefix="role_" resultMap="mapper.RoleMapper.roleMap"/>
+<!--        <association property="role" columnPrefix="role_" javaType="model.SysRole" resultMap="roleMap">-->
+<!--            <result property="id" column="id"></result>-->
+<!--            <result property="roleName" column="role_name"></result>-->
+<!--            <result property="enabled" column="enabled"></result>-->
+<!--            <result property="createBy" column="create_by" jdbcType="TIMESTAMP"></result>-->
+<!--            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>-->
+<!--        </association>-->
+    </resultMap>
+    <resultMap id="userRoleListMap" type="model.SysUser" extends="userMap">
+        <collection property="roleList" resultMap="mapper.RoleMapper.rolePrivilegeListMap" columnPrefix="role_"/>
+    </resultMap>
+
+<!--    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">-->
+    <insert id="insertUser">
+        <selectKey keyProperty="id" keyColumn="id" resultType="long" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_user(user_name,user_password,user_email,user_info,head_img,create_time)
+        values (#{userName},#{userPassword},#{userEmail},#{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByUserId">
+        update sys_user
+        set user_name = #{userName},
+        user_email = #{userEmail},
+        user_info = #{userInfo},
+        head_img = #{headImg,jdbcType=BLOB},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+    <select id="selectById" resultMap="userMap">
+        select * from sys_user where id = #{id}
+    </select>
+    <select id="selectAll" resultType="model.SysUser">
+        select id,user_name,user_password,user_email,user_info,head_img,create_time from sys_user
+    </select>
+    <select id="selectRolesByUserId" resultType="model.SysRole">
+        select r.id,
+        r.role_name roleName,
+        r.enabled,
+        r.create_by createBy,
+        r.create_time createTime,
+        u.user_name as "sysUser.userName",
+        u.user_email as "sysUser.userEmail"
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id = #{userId}
+    </select>
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="model.SysRole">
+        select r.id,
+        r.role_name roleName,
+        r.enabled,
+        r.create_by createBy,
+        r.create_time createTime,
+        u.user_name as "sysUser.userName",
+        u.user_email as "sysUser.userEmail"
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id=#{userId} and r.enabled=#{enabled}
+    </select>
+    <select id="selectUserRoleById" resultMap="userRoleMap">
+        select u.id,u.user_name,u.user_password,u.user_email,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.enabled enabled,r.create_by create_by,r.create_time role_create_time,
+        r.role_name role_name
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id= #{userId}
+    </select>
+    <select id="selectUserRoleById2" resultMap="userRoleMap2">
+        select u.id,u.user_name,u.user_password,u.user_email,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.enabled role_enabled,r.create_by role_create_by,r.create_time role_create_time,
+        r.role_name role_role_name
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        where u.id= #{userId}
+    </select>
+    <select id="selectAllUserAndRoles" resultMap="userRoleListMap">
+        select u.id,u.user_name,u.user_password,u.user_info,u.head_img,u.create_time,
+        r.id role_id,r.role_name role_role_name,r.enabled role_enabled,r.create_by role_create_by,r.create_time role_create_time,
+        p.id role_privilege_id,p.privilege_name role_privilege_privilege_name,p.privilege_url role_privilege_privilege_url
+        from sys_user u
+        inner join sys_user_role ur on ur.user_id = u.id
+        inner join sys_role r on r.id = ur.role_id
+        inner join sys_role_privilege rp on rp.role_id = ur.role_id
+        inner join sys_privilege p on p.id = rp.privilege_id
+    </select>
+</mapper>
