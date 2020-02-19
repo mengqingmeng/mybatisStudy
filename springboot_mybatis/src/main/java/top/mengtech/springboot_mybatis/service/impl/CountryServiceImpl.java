@@ -2,7 +2,6 @@ package top.mengtech.springboot_mybatis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.mengtech.springboot_mybatis.interfaces.CurDataSource;
 import top.mengtech.springboot_mybatis.mapper.CountryMapper;
 import top.mengtech.springboot_mybatis.model.Country;
 import top.mengtech.springboot_mybatis.service.CountryService;
@@ -23,12 +22,6 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<Country> selectAllCountryFirst() {
-        return countryMapper.selectAll();
-    }
-
-    @Override
-    @CurDataSource(name="second")
-    public List<Country> selectAllCountrySecond() {
         return countryMapper.selectAll();
     }
 }

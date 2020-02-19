@@ -1,8 +1,13 @@
 package top.mengtech.springboot_mybatis.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.mengtech.springboot_mybatis.model.Country;
+import top.mengtech.springboot_mybatis.service.CountryService;
+
+import java.util.List;
 
 /**
  * @ClassName TestController
@@ -14,10 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/test")
 @Controller
 public class TestController {
+    @Autowired
+    private CountryService countryService;
 
     @RequestMapping("/log")
     @ResponseBody
     public String log(){
-        return "test log ok";
+        List<Country> countryList = countryService.selectAllCountryFirst();
+        return countryList.toString();
     }
 }

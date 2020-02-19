@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import top.mengtech.springboot_mybatis.jwt.JwtTokenUtil;
 import top.mengtech.springboot_mybatis.security.JwtUserDetailService;
@@ -56,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 System.out.println("JWT token has expired");
             }
         }else{
-            System.out.println("jwt token does not begin with Bearer String");
+            log.info("请求未携带token，url:" + httpServletRequest.getServletPath());
         }
 
         if(name != null && SecurityContextHolder.getContext().getAuthentication() !=null){
@@ -75,5 +76,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        AntPathMatcher matcher = new AntPathMatcher();
+        return matcher.match("/druid", request.getServletPath()) || matcher.match("/favicon.ico",request.getServletPath());
     }
 }
