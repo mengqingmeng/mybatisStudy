@@ -1,6 +1,7 @@
 package top.mengtech.springboot_mybatis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,13 @@ public class TestController {
     @ResponseBody
     public String log(){
         List<Country> countryList = countryService.selectAllCountryFirst();
+        return countryList.toString();
+    }
+
+    @RequestMapping("/log2")
+    @ResponseBody
+    public String log2(){
+        List<Country> countryList = countryService.selectAllCountrySecond();
         return countryList.toString();
     }
 }

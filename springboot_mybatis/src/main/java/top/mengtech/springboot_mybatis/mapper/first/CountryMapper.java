@@ -1,4 +1,4 @@
-package top.mengtech.springboot_mybatis.mapper;
+package top.mengtech.springboot_mybatis.mapper.first;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
