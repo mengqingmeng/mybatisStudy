@@ -4,8 +4,8 @@
 <mapper namespace="mapper.PrivilegeMapper">
     <resultMap id="privilegeMap" type="model.SysPrivilege">
         <id property="id" column="id"></id>
-        <result property="privilegeName" column="privilege_name"></result>
-        <result property="privilegeUrl" column="privilege_url"></result>
+        <result property="privilegeName" column="privilege_name"/>
+        <result property="privilegeUrl" column="privilege_url" />
     </resultMap>
 
 <!--    根据角色id获取该角色下的权限-->

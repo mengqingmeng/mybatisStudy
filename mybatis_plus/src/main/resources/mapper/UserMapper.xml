@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="top.mengtech.mybatis_plus.mapper.UserMapper">
+    <update id="createUserTable" parameterType="String">
+        CREATE TABLE ${tableName} (
+                                `id` bigint(20) NOT NULL COMMENT '主键ID',
+                                `name` varchar(30) DEFAULT NULL COMMENT '姓名',
+                                `age` int(11) DEFAULT NULL COMMENT '年龄',
+                                `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+                                PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    </update>
+    <select id="selectTableWithShow" resultType="java.lang.String">
+        show tables like #{tableName}
+    </select>
+</mapper>
